@@ -36,5 +36,5 @@ jobs:
 
       - name: Build & Publish
         run: |
-          docker buildx build --platform ${{ matrix.platform }} -t ankur512512/python-fastapi-userlogin:"$GITHUB_SHA" --push .
-          echo -e "\n\nKindly use tag: $GITHUB_SHA in your deployment...\n\n"
+          docker buildx build --platform ${{ matrix.platform }} -t ankur512512/python-fastapi-userlogin:"$GITHUB_SHA-${{ matrix.platform }}" --push .
+          echo -e "\n\nKindly use tag: $GITHUB_SHA-${{ matrix.platform }} in your deployment...\n\n"
