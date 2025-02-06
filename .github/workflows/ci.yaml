@@ -46,3 +46,22 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+      - name: Checkout infrarepo
+        uses: actions/checkout@v4
+        with:
+          repository: ankur512512/argocd-python-userlogin
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}  # Personal Access Token with repo write access
+          path: argocd-python-userlogin
+      - name: Update Image Version in the related HelmChart values.yaml
+        uses: OpsVerseIO/image-updater-action@0.1.0
+        with:
+          valueFile: 'values.yaml'
+          propertyPath: 'deployment.backend.image.tag'
+          value: ${{ github.sha }}
+          repository: ankur512512/python-fastapi-userlogin
+          branch: deployment/${{ github.sha }}
+          targetBranch: main
+          createPR: true
+          message: 'Update Image Version to ${{ github.sha }}'
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          workDir: python-fastapi-userlogin    
