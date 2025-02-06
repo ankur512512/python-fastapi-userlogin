@@ -55,7 +55,7 @@ jobs:
       - name: Update Image Version in the related HelmChart values.yaml
         uses: OpsVerseIO/image-updater-action@0.1.0
         with:
-          valueFile: 'values.yaml'
+          valueFile: 'argocd-python-userlogin/values.yaml'
           propertyPath: 'deployment.backend.image.tag'
           value: ${{ github.sha }}
           repository: ankur512512/python-fastapi-userlogin
