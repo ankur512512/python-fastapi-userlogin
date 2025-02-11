@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+
 function App() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -18,7 +20,7 @@ function App() {
     const requestBody = isLogin ? { username, password } : { username, email, password };
 
     try {
-      const response = await fetch(`http://127.0.0.1:8080/${endpoint}`, {
+      const response = await fetch(`${BACKEND_URL}/${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams(requestBody),
