@@ -56,14 +56,19 @@ jobs:
         uses: OpsVerseIO/image-updater-action@0.1.0
         with:
           valueFile: 'values.yaml'
-          propertyPath: 'deployment.backend.image.tag'
-          value: ${{ github.sha }}
+          # propertyPath: 'deployment.backend.image.tag'
+          # value: ${{ github.sha }}
           repository: ankur512512/argocd-python-userlogin
           branch: main
           targetBranch: main
           createPR: false
-          message: 'Update Image Version to ${{ github.sha }}'
+          message: 'Bumping image tags to ${{ github.sha }}'
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           workDir: argocd-python-userlogin
           masterBranchName: main
           force: true
+          changes: |
+            {
+              "deployment.backend.image.tag": ${{ github.sha }}
+              "deployment.frontend.image.tag": ${{ github.sha }}
+            }
