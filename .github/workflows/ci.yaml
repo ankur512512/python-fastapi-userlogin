@@ -31,21 +31,36 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build & Publish
+      - name: Build images
         run: |
-          docker buildx build --platform linux/amd64,linux/arm64 -t ankur512512/python-fastapi-userlogin:"$GITHUB_SHA" --push .
-          echo -e "\n\nKindly use tag: $GITHUB_SHA in your deployment...\n\n"
-      - name: Run Trivy vulnerability scanner
+          docker buildx build --platform linux/amd64,linux/arm64 -t ankur512512/python-fastapi-backend:"$GITHUB_SHA" ./backend
+          docker buildx build --platform linux/amd64,linux/arm64 -t ankur512512/python-fastapi-frontend:"$GITHUB_SHA" ./frontend
+      - name: Run Trivy vulnerability scanner for frontend image
         uses: aquasecurity/trivy-action@0.28.0
         env:
           TRIVY_DISABLE_VEX_NOTICE: true
         with:
-          image-ref: 'ankur512512/python-fastapi-userlogin:${{ github.sha }}'
+          image-ref: 'ankur512512/python-fastapi-frontend:${{ github.sha }}'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+      - name: Run Trivy vulnerability scanner for backend image
+        uses: aquasecurity/trivy-action@0.28.0
+        env:
+          TRIVY_DISABLE_VEX_NOTICE: true
+        with:
+          image-ref: 'ankur512512/python-fastapi-backend:${{ github.sha }}'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+      - name: Build & Publish images # Unfortunately there is no way to ONLY PUSH the images with buildx, so we build again and push
+        run: |
+          docker buildx build --platform linux/amd64,linux/arm64 -t ankur512512/python-fastapi-backend:"$GITHUB_SHA" --push ./backend
+          docker buildx build --platform linux/amd64,linux/arm64 -t ankur512512/python-fastapi-frontend:"$GITHUB_SHA" --push ./frontend    
       - name: Checkout infrarepo
         uses: actions/checkout@v4
         with:
