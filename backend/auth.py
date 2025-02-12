@@ -47,25 +47,13 @@ async def get_db():
 # Password hashing setup
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # Startup logic here
+# Ensure tables are created in the database
+@app.on_event("startup")
+async def startup_event():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-    
-    # Additional startup check
-    async with async_session() as session:
-        try:
-            await session.execute(select(User).limit(1))
-        except Exception as e:
-            raise Exception(f"Database connection failed: {e}")
-            # Optionally, you can raise an exception here to prevent the app from starting if the DB isn't ready.
 
-    yield
-
-app = FastAPI(lifespan=lifespan)
-
-@app.post("/signup")
+@app.post("/api/signup")
 async def signup(
     username: str = Form(...),
     email: str = Form(...),
@@ -90,7 +78,7 @@ async def signup(
     await db.commit()
     return {"message": f"User {username} signed up successfully!"}
 
-@app.post("/login")
+@app.post("/api/login")
 async def login(
     username: str = Form(...),
     password: str = Form(...),

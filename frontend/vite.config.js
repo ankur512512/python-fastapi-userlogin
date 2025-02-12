@@ -4,5 +4,6 @@ export default {
   plugins: [react()],
   server: {
     port: 5173,  // Frontend will run on this port
+    allowedHosts: true,
   },
 };
