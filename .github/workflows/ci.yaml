@@ -35,6 +35,9 @@ jobs:
         run: |
           docker buildx build --platform linux/amd64,linux/arm64 -t ankur512512/python-fastapi-backend:"$GITHUB_SHA" ./backend --load
           docker buildx build --platform linux/amd64,linux/arm64 -t ankur512512/python-fastapi-frontend:"$GITHUB_SHA" ./frontend --load
+          docker buildx build -t ankur512512/python-fastapi-backend:"$GITHUB_SHA" ./backend --load
+          docker buildx build -t ankur512512/python-fastapi-frontend:"$GITHUB_SHA" ./frontend --load
+          docker images
       - name: Run Trivy vulnerability scanner for frontend image
         uses: aquasecurity/trivy-action@0.28.0
         env:
