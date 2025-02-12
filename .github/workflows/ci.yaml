@@ -87,6 +87,6 @@ jobs:
           force: true
           changes: |
             {
-              "deployment.backend.image.tag": "${{ github.sha }}"
+              "deployment.backend.image.tag": "${{ github.sha }}",
               "deployment.frontend.image.tag": "${{ github.sha }}"
             }
