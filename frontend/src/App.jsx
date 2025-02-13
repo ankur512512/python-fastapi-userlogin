@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 function App() {
   const [username, setUsername] = useState("");
@@ -44,7 +44,7 @@ function App() {
     <div className="min-h-screen flex items-center bg-gray-100">
       {/* Left: Flowchart Section */}
       <div className="w-1/2 h-screen flex items-center justify-center bg-white shadow-lg">
-        <img src="/flowchart.gif" alt="Flowchart Animation" className="w-3/4 rounded-lg shadow-md" />
+        <img src="/flowchart.gif" alt="Flowchart Animation" className="w-full h-full object-cover rounded-lg shadow-md" />
       </div>
 
       {/* Right: Auth Form Section */}
