@@ -4,12 +4,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import declarative_base, sessionmaker
 from passlib.context import CryptContext
+from prometheus_fastapi_instrumentator import Instrumentator
 from sqlalchemy import Column, String
 from sqlalchemy.future import select
 from contextlib import asynccontextmanager
 
 
 app = FastAPI()
+Instrumentator().instrument(app).expose(app)
 
 # Frontend URL
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
