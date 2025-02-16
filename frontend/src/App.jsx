@@ -14,6 +14,21 @@ function App() {
   const handleSubmit = async () => {
     setMessage("");
     setError("");
+
+    // **Frontend Validation**
+    if (!username.trim()) {
+      setError("Username cannot be empty.");
+      return;
+    }
+    if (!isLogin && !email.trim()) {
+      setError("Email cannot be empty.");
+      return;
+    }
+    if (!password.trim()) {
+      setError("Password cannot be empty.");
+      return;
+    }
+
     setIsLoading(true);
 
     const endpoint = isLogin ? "login" : "signup";
@@ -59,6 +74,7 @@ function App() {
               type="text"
               placeholder="Username"
               className="w-full p-3 border rounded-lg"
+              value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
             {!isLogin && (
@@ -66,6 +82,7 @@ function App() {
                 type="email"
                 placeholder="Email"
                 className="w-full p-3 border rounded-lg"
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             )}
@@ -73,6 +90,7 @@ function App() {
               type="password"
               placeholder="Password"
               className="w-full p-3 border rounded-lg"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
             <button
@@ -88,16 +106,20 @@ function App() {
             </button>
           </div>
 
-          {/* Success Message */}
-          {message && <p className="text-center text-green-600 mt-3">{message}</p>}
-
           {/* Error Message */}
           {error && <p className="text-center text-red-600 mt-3">{error}</p>}
+
+          {/* Success Message */}
+          {message && <p className="text-center text-green-600 mt-3">{message}</p>}
 
           {/* Toggle Login/Signup */}
           <button
             className="w-full text-blue-500 hover:underline mt-4"
-            onClick={() => setIsLogin(!isLogin)}
+            onClick={() => {
+              setIsLogin(!isLogin);
+              setError(""); // Clear errors when switching forms
+              setMessage(""); // Clear messages when switching forms
+            }}
           >
             {isLogin ? "Need an account? Sign Up" : "Already have an account? Login"}
           </button>

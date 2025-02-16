@@ -62,6 +62,14 @@ async def signup(
     password: str = Form(...),
     db: AsyncSession = Depends(get_db)
 ):
+    # Validate empty fields
+    if not username.strip():
+        raise HTTPException(status_code=400, detail="Username cannot be empty")
+    if not email.strip():
+        raise HTTPException(status_code=400, detail="Email cannot be empty")
+    if not password.strip():
+        raise HTTPException(status_code=400, detail="Password cannot be empty")
+
     # Check if user already exists
     result = await db.execute(User.__table__.select().where(User.username == username))
     existing_user = result.scalar_one_or_none()
@@ -86,7 +94,9 @@ async def login(
     password: str = Form(...),
     db: AsyncSession = Depends(get_db)
 ):
-    # Use select from sqlalchemy.future for async queries
+    if not username.strip() or not password.strip():
+        raise HTTPException(status_code=400, detail="Username and password are required")
+
     stmt = select(User).where(User.username == username)
     result = await db.execute(stmt)
     user = result.scalar_one_or_none()
