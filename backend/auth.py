@@ -96,14 +96,14 @@ async def login(
 
     return {"message": f"Welcome back, {username}!"}
 
-@app.get("/health/liveness")
-async def liveness():
-    return {"status": "alive"}
-
 @app.get("/health/readiness")
-async def readiness(db: AsyncSession = Depends(get_db)):
+async def readiness():
+    return {"status": "ready"}
+
+@app.get("/health/liveness")
+async def liveness(db: AsyncSession = Depends(get_db)):
     try:
         await db.execute(select(User).limit(1))
         return {"status": "ready"}
     except Exception as e:
-        raise HTTPException(status_code=503, detail=f"Service not ready: {str(e)}")
+        raise HTTPException(status_code=503, detail=f"Database Service not ready: {str(e)}")
