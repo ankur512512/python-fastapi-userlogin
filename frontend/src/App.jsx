@@ -11,11 +11,16 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
 
+  const today = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   const handleSubmit = async () => {
     setMessage("");
     setError("");
 
-    // **Frontend Validation**
     if (!username.trim()) {
       setError("Username cannot be empty.");
       return;
@@ -57,14 +62,13 @@ function App() {
 
   return (
     <div className="min-h-screen flex items-center bg-gray-100">
-      {/* Left: Flowchart Section */}
       <div className="w-1/2 h-screen flex items-center justify-center bg-white shadow-lg">
         <img src="/flowchart.gif" alt="Flowchart Animation" className="w-full h-full object-cover rounded-lg shadow-md" />
       </div>
 
-      {/* Right: Auth Form Section */}
       <div className="w-1/2 flex flex-col justify-center items-center px-12">
         <div className="w-full max-w-md bg-white p-8 shadow-md rounded-lg">
+          <p className="text-sm text-gray-500 text-right mb-2">Date deployed: {today}</p>
           <h2 className="text-3xl font-semibold text-center text-gray-700 mb-6">
             {isLogin ? "Login" : "Signup"}
           </h2>
@@ -106,19 +110,15 @@ function App() {
             </button>
           </div>
 
-          {/* Error Message */}
           {error && <p className="text-center text-red-600 mt-3">{error}</p>}
-
-          {/* Success Message */}
           {message && <p className="text-center text-green-600 mt-3">{message}</p>}
 
-          {/* Toggle Login/Signup */}
           <button
             className="w-full text-blue-500 hover:underline mt-4"
             onClick={() => {
               setIsLogin(!isLogin);
-              setError(""); // Clear errors when switching forms
-              setMessage(""); // Clear messages when switching forms
+              setError("");
+              setMessage("");
             }}
           >
             {isLogin ? "Need an account? Sign Up" : "Already have an account? Login"}
