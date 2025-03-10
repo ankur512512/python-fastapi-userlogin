@@ -19,7 +19,7 @@ RUN npm install
 COPY . .
 
 # Expose frontend port
-EXPOSE 3000
+EXPOSE 5173
 
 # Start the React app
 CMD ["npm", "run", "dev"]
