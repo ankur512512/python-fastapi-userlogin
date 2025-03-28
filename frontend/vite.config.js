@@ -5,5 +5,8 @@ export default {
   server: {
     port: 5173,  // Frontend will run on this port
     allowedHosts: true,
+    hmr: {
+      overlay: false, // Disable the error overlay
+    },
   },
 };
