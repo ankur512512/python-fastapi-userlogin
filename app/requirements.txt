@@ -1,8 +1,0 @@
-asyncpg
-bcrypt
-fastapi
-jinja2
-passlib
-python-multipart
-sqlalchemy
-uvicorn
